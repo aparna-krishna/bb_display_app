@@ -27,7 +27,7 @@ def get_rec_outfit(test_df,img_index, image_files, embeddings, occasion="", quer
                'womens-coats-and-jackets':'tops',
                'sneakers':'shoes',
                'boots':'shoes',
-               'sandals':'shoes',
+               'sandals':'sandals',
                'bag':'bag',
                'belt':'none',
                'Belt':'none',
@@ -56,7 +56,7 @@ def get_rec_outfit(test_df,img_index, image_files, embeddings, occasion="", quer
     cat = str(test_df[test_df['ImgPath']==query_img_pth]['category'].tolist()[0].lower())
     cat = cat_map[cat]
 
-    outfit_dict_types = {'dress':['bag', 'shoes'],
+    outfit_dict_types = {'dress':['bag', 'sandals'],
     'top':['bottom', 'shoes'],
     'bottom':['top','shoes'],
     'shoes':['top', 'bottom']}
@@ -101,7 +101,9 @@ def get_rec_outfit(test_df,img_index, image_files, embeddings, occasion="", quer
 # load the test set + embeddings
 #test_df = pd.read_csv('bb_results_df.csv') 
 test_df = pd.read_csv('bb_cleaner.csv') 
-image_files = os.listdir('bluebungalow_2k_single_image')
+ims = test_df.ImgPath.tolist()#os.listdir('bluebungalow_2k_single_image')
+image_files=[]
+for im in ims: image_files.append(im.split('/')[-1])
 embeddings=torch.load('bb_test_set_embeddings.pt')
 
 # create the sidebar
@@ -146,7 +148,7 @@ elif st.session_state['query_category'] == 'top':
 elif st.session_state['query_category'] == 'shoes':
     st.session_state['outfit_order'] = ['bottom', 'top']
 elif st.session_state['query_category'] == 'dress':
-    st.session_state['outfit_order'] = ['shoes', 'bag']
+    st.session_state['outfit_order'] = ['sandals', 'bag']
 elif st.session_state['query_category'] == 'shoes':
     st.session_state['outfit_order'] = ['top', 'bottom']
 
